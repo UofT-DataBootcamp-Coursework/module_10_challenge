@@ -12,7 +12,7 @@ Robin’s web app is looking good and functioning well, but she wanted to add mo
 ## Resources
 Data Sources: [Mission to Mars](Mission_to_Mars.ipynb), [app](app_challenge.py), [scraping](scraping_challenge.py), [index](templates/index_challenge.html)
 
-Software: Python - Browser, BeautifulSoup, pandas, datetime; Flask, MongoDB, HTML
+Software: Python - Browser, BeautifulSoup, Pandas, Datetime; Flask, MongoDB, HTML
 
 ## Challenge Summary
 
