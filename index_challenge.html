@@ -51,6 +51,21 @@
              <h4>Mars Facts</h4>
               {{ mars.facts | safe }}   
           </div>
+
+          <!-- CHALLENGE: Section for hemisphere title and Image -->
+       <!-- Loop through the titles and img_urls -->
+        <h1>Mars Hemisphere Title and Images</h1>
+       {% for hemisphere in mars.hemispheres %}
+       <div class="row" id="mars-hemisphere-image">
+        <div class="col-md-4">
+       <h2>{{hemisphere["title"]}}</h2>
+       <img
+            src="{{hemisphere[img_url] | default('static/images/error.png', true) }}"
+            class="img-responsive"
+            alt="Responsive image"
+       {% endfor %}
+
+          />
         </div>
       </div>
     </div>

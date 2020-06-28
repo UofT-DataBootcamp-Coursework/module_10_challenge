@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_pymongo import PyMongo
-import scraping
+import scraping_challenge
 
 # set up Flask
 app = Flask(__name__)
@@ -13,13 +13,13 @@ mongo = PyMongo(app)
 @app.route("/")
 def index():
    mars = mongo.db.mars.find_one()
-   return render_template("index.html", mars=mars)
+   return render_template("index_challenge.html", mars=mars)
 
-# set up scraping route
+# set up scraping route, scrape, redirect back to index
 @app.route("/scrape")
 def scrape():
    mars = mongo.db.mars
-   mars_data = scraping.scrape_all()
+   mars_data = scraping_challenge.scrape_all()
    mars.update({}, mars_data, upsert=True)
    return "Scraping Successful!"
 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mission to Mars</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Add Jumbotron to Header -->
+      <div class="jumbotron text-center">
+        <h1><span class="label label-primary">Mission to Mars</span></h1>
+        <!-- Add a button to activate scraping script -->
+        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        
+        <!-- To include JavaScript functionalities-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
+        <!-- Single button - movies based on Mars -->
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Mars Movies 
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="https://www.20thcenturystudios.com/movies/the-martian">The Martian</a></li>
+            <li><a href="https://www.warnerbros.com/movies/mars-attacks/">Mars Attacks!</a></li>
+            <li><a href="https://movies.disney.com/mars-needs-moms">Mars Needs Moms</a></li>
+            <li><a href="https://theofficialjohncarpenter.com/ghost-of-mars/">Ghosts of Mars</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.rottentomatoes.com/m/total_recall">THE Definitive Mars Movie</a></li>
+          </ul>
+        </div>
+      </div>  
+      <!-- Add section for Mars News -->
+      <div class="row" id="mars-news">
+        <div class="col-md-12">
+          <div class="media">
+            <div class="media-body">
+              <h2><span class="label label-warning">Latest Mars News</span></h2>
+              <h4 class="media-heading">{{ mars.news_title }}</h4>
+              <p>{{ mars.news_paragraph }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CHALLENGE: Section for hemisphere title and Image -->
+      <!-- Loop through the titles and img_urls -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h2><span class="label label-danger">Mars Hemisphere Title and Images</span></h2>
+            {% for hemisphere in mars.hemispheres %}
+              <div class="col-md-3">  
+                <div class="row" id="mars-hemisphere-image">
+                  <h5><span class="label label-success">{{hemisphere["title"]}}</span></h5>
+                    <a href={{hemisphere["img_url"]}} class="thumbnail">
+                      <img
+                        src="{{hemisphere['img_url'] | default('static/images/error.png', true)}}"
+                        class="img-responsive"
+                        alt="whoops...Martin's scrape didn't work as expected"
+                        height="200"
+                        width="200"
+                      />
+                    </a>  
+                </div>
+              </div>  
+            {% endfor %}
+          </div>      
+        </div>
+      </div>
+       
+      <!-- Section for Featured Image and Facts table -->
+      <div class="row" id="mars-featured-image">
+        <div class="col-md-8">
+          <h2><span class="label label-info">Featured Mars Image</span></h2>
+
+          <!-- if images is False/None/non-existent, then default to error message -->
+          <img
+            src="{{mars.featured_image | default('static/images/error.png', true) }}"
+            class="img-responsive"
+            alt="Responsive image"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <!-- Mars Facts -->
+          <div class="row" id="mars-facts">
+             <h4><span class="label label-default">Mars Facts</span></h4>
+              {{ mars.facts | safe }}   
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

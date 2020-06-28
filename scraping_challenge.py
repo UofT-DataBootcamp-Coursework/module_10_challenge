@@ -9,23 +9,76 @@ def scrape_all():
     # Initiate headless driver for deployment
     browser = Browser("chrome", executable_path="chromedriver", headless=True)
     news_title, news_paragraph = mars_news(browser)
-
+    
     # Run all scraping functions and store results in dictionary
     data = {
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres" : challenge_scrape(browser),
         "last_modified": dt.datetime.now()
-        }
-    
+    }
+        
     browser.quit()
 
     return data
     
 # Set the executable path and initialize the chrome browser in splinter
 executable_path = {'executable_path': 'chromedriver'}
-browser = Browser('chrome', **executable_path)
+browser = Browser('chrome', **executable_path, headless=True)
+
+def challenge_scrape(browser):
+    # Set the executable path and initialize the chrome browser in splinter
+    executable_path = {'executable_path': 'chromedriver'}
+    browser = Browser('chrome', **executable_path, headless=True)
+    
+    # Visit URL
+    url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-online-content/module_10/Astropedia+Search+Results+_+USGS+Astrogeology+Science+Center.htm'
+    browser.visit(url)
+    # Optional delay for loading the page
+    browser.is_element_present_by_css('div.item a.product-item', wait_time=1)
+    
+    # Parse the resulting html with soup
+    html = browser.html
+    challenge_soup = BeautifulSoup(html, 'html.parser')
+    
+    # Create empty list to store individual hemi links
+    hemispheres = []
+    
+    for i in (0,2,4,6):
+        hemi_link = challenge_soup.select('div.item a.product-item')[i].get('href')
+            
+        hemispheres.append(hemi_link)
+    
+    # Create empty list to store hemi title and image
+    hemi_challenge = []
+    
+    for i in range(4):
+        # Visit hemisphere link
+        url = hemispheres[i]
+        browser.visit(url)
+
+        # Parse the resulting html with soup
+        html = browser.html
+        challenge_soup = BeautifulSoup(html, 'html.parser')
+        
+        # Find the title
+        title = challenge_soup.find('h2', class_='title').get_text()
+        
+        # Find the relative image url
+        img_url = challenge_soup.select_one('ul li a').get('href')
+        
+        # Add title and image to hemi_challenge
+        hemisphere = {
+            'title' : title,
+            'img_url' : img_url
+        }
+        
+        # append the dict to hemi_challenge
+        hemi_challenge.append(hemisphere)
+        
+    return hemi_challenge
 
 def mars_news(browser):
     # Visit the mars nasa news site
