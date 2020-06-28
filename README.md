@@ -1,4 +1,6 @@
 updated June 28, 2020
+
+[link: portfolio](https://github.com/martinkaminskyj/portfolio)
 ![](images/portfolio_1.PNG)
 ![](images/portfolio_2.PNG)
 ![](images/portfolio_3.PNG)
